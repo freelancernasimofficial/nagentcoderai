@@ -19,7 +19,7 @@
 
 ## Overview
 
-nAgentCoderAI is an advanced AI-powered coding assistant for Visual Studio Code. Built upon the foundation of the open-source Cline project, nAgentCoderAI enhances your development workflow with intelligent automation, code generation, and seamless integration with your IDE.
+nAgentCoderAI is an advanced AI-powered coding assistant for Visual Studio Code. This proprietary extension enhances your development workflow with intelligent automation, code generation, and seamless integration with your IDE.
 
 ## Features
 
@@ -54,9 +54,11 @@ Configure nAgentCoderAI through VS Code settings:
 - Workspace-specific preferences
 - Security and permission settings
 
-## Contributing
+## Support
 
-This project is based on the open-source Cline project. We welcome contributions to make nAgentCoderAI even better!
+For support, feature requests, or bug reports, please contact us through:
+- GitHub Issues: [Report an Issue](https://github.com/freelancernasimofficial/nagentcoderai/issues)
+- Email: support@fnsoftwares.com
 
 ## Author
 
@@ -64,9 +66,9 @@ This project is based on the open-source Cline project. We welcome contributions
 
 ## License
 
-This project is licensed under the Apache-2.0 License - see the LICENSE file for details.
+This software is proprietary and owned by FnSoftwares. All rights reserved.
 
 ## Acknowledgments
 
-- Built upon the excellent [Cline](https://github.com/cline/cline) open-source project
+- Inspired by open-source AI coding assistants
 - Thanks to the VS Code extension development community
