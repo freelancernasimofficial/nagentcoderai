@@ -1,22 +1,22 @@
 {
-	"name": "claude-dev",
-	"displayName": "Cline",
-	"description": "Autonomous coding agent right in your IDE, capable of creating/editing files, running commands, using the browser, and more with your permission every step of the way.",
-	"version": "3.18.0",
+	"name": "nagentcoderai",
+	"displayName": "nAgentCoderAI",
+	"description": "Advanced AI coding agent for VS Code, capable of creating/editing files, running commands, using the browser, and more with intelligent automation and user permission.",
+	"version": "1.0.0",
 	"icon": "assets/icons/icon.png",
 	"engines": {
 		"vscode": "^1.84.0"
 	},
 	"author": {
-		"name": "Cline Bot Inc."
+		"name": "Md Nasim"
 	},
 	"license": "Apache-2.0",
-	"publisher": "saoudrizwan",
+	"publisher": "FnSoftwares",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/cline/cline"
+		"url": "https://github.com/freelancernasimofficial/nagentcoderai"
 	},
-	"homepage": "https://cline.bot",
+	"homepage": "https://github.com/freelancernasimofficial/nagentcoderai",
 	"categories": [
 		"AI",
 		"Chat",
@@ -26,18 +26,18 @@
 		"Testing"
 	],
 	"keywords": [
-		"cline",
-		"claude",
-		"dev",
-		"mcp",
-		"openrouter",
+		"nagentcoderai",
+		"ai",
 		"coding",
 		"agent",
 		"autonomous",
-		"chatgpt",
-		"sonnet",
-		"ai",
-		"llama"
+		"development",
+		"assistant",
+		"automation",
+		"programming",
+		"intelligent",
+		"coder",
+		"llm"
 	],
 	"activationEvents": [
 		"onLanguage",
