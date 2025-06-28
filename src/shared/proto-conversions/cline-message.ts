@@ -1,172 +1,172 @@
-import { ClineMessage as AppClineMessage, ClineAsk as AppClineAsk, ClineSay as AppClineSay } from "@shared/ExtensionMessage"
+import { nAgentCoderAIMessage as AppnAgentCoderAIMessage, nAgentCoderAIAsk as AppnAgentCoderAIAsk, nAgentCoderAISay as AppnAgentCoderAISay } from "@shared/ExtensionMessage"
 
-import { ClineMessage as ProtoClineMessage, ClineMessageType, ClineAsk, ClineSay } from "@shared/proto/ui"
+import { nAgentCoderAIMessage as ProtonAgentCoderAIMessage, nAgentCoderAIMessageType, nAgentCoderAIAsk, nAgentCoderAISay } from "@shared/proto/ui"
 
-// Helper function to convert ClineAsk string to enum
-function convertClineAskToProtoEnum(ask: AppClineAsk | undefined): ClineAsk | undefined {
+// Helper function to convert nAgentCoderAIAsk string to enum
+function convertnAgentCoderAIAskToProtoEnum(ask: AppnAgentCoderAIAsk | undefined): nAgentCoderAIAsk | undefined {
 	if (!ask) {
 		return undefined
 	}
 
-	const mapping: Record<AppClineAsk, ClineAsk> = {
-		followup: ClineAsk.FOLLOWUP,
-		plan_mode_respond: ClineAsk.PLAN_MODE_RESPOND,
-		command: ClineAsk.COMMAND,
-		command_output: ClineAsk.COMMAND_OUTPUT,
-		completion_result: ClineAsk.COMPLETION_RESULT,
-		tool: ClineAsk.TOOL,
-		api_req_failed: ClineAsk.API_REQ_FAILED,
-		resume_task: ClineAsk.RESUME_TASK,
-		resume_completed_task: ClineAsk.RESUME_COMPLETED_TASK,
-		mistake_limit_reached: ClineAsk.MISTAKE_LIMIT_REACHED,
-		auto_approval_max_req_reached: ClineAsk.AUTO_APPROVAL_MAX_REQ_REACHED,
-		browser_action_launch: ClineAsk.BROWSER_ACTION_LAUNCH,
-		use_mcp_server: ClineAsk.USE_MCP_SERVER,
-		new_task: ClineAsk.NEW_TASK,
-		condense: ClineAsk.CONDENSE,
-		report_bug: ClineAsk.REPORT_BUG,
+	const mapping: Record<AppnAgentCoderAIAsk, nAgentCoderAIAsk> = {
+		followup: nAgentCoderAIAsk.FOLLOWUP,
+		plan_mode_respond: nAgentCoderAIAsk.PLAN_MODE_RESPOND,
+		command: nAgentCoderAIAsk.COMMAND,
+		command_output: nAgentCoderAIAsk.COMMAND_OUTPUT,
+		completion_result: nAgentCoderAIAsk.COMPLETION_RESULT,
+		tool: nAgentCoderAIAsk.TOOL,
+		api_req_failed: nAgentCoderAIAsk.API_REQ_FAILED,
+		resume_task: nAgentCoderAIAsk.RESUME_TASK,
+		resume_completed_task: nAgentCoderAIAsk.RESUME_COMPLETED_TASK,
+		mistake_limit_reached: nAgentCoderAIAsk.MISTAKE_LIMIT_REACHED,
+		auto_approval_max_req_reached: nAgentCoderAIAsk.AUTO_APPROVAL_MAX_REQ_REACHED,
+		browser_action_launch: nAgentCoderAIAsk.BROWSER_ACTION_LAUNCH,
+		use_mcp_server: nAgentCoderAIAsk.USE_MCP_SERVER,
+		new_task: nAgentCoderAIAsk.NEW_TASK,
+		condense: nAgentCoderAIAsk.CONDENSE,
+		report_bug: nAgentCoderAIAsk.REPORT_BUG,
 	}
 
 	const result = mapping[ask]
 	if (result === undefined) {
-		console.warn(`Unknown ClineAsk value: ${ask}`)
+		console.warn(`Unknown nAgentCoderAIAsk value: ${ask}`)
 	}
 	return result
 }
 
-// Helper function to convert ClineAsk enum to string
-function convertProtoEnumToClineAsk(ask: ClineAsk): AppClineAsk | undefined {
-	if (ask === ClineAsk.UNRECOGNIZED) {
-		console.warn("Received UNRECOGNIZED ClineAsk enum value")
+// Helper function to convert nAgentCoderAIAsk enum to string
+function convertProtoEnumTonAgentCoderAIAsk(ask: nAgentCoderAIAsk): AppnAgentCoderAIAsk | undefined {
+	if (ask === nAgentCoderAIAsk.UNRECOGNIZED) {
+		console.warn("Received UNRECOGNIZED nAgentCoderAIAsk enum value")
 		return undefined
 	}
 
-	const mapping: Record<Exclude<ClineAsk, ClineAsk.UNRECOGNIZED>, AppClineAsk> = {
-		[ClineAsk.FOLLOWUP]: "followup",
-		[ClineAsk.PLAN_MODE_RESPOND]: "plan_mode_respond",
-		[ClineAsk.COMMAND]: "command",
-		[ClineAsk.COMMAND_OUTPUT]: "command_output",
-		[ClineAsk.COMPLETION_RESULT]: "completion_result",
-		[ClineAsk.TOOL]: "tool",
-		[ClineAsk.API_REQ_FAILED]: "api_req_failed",
-		[ClineAsk.RESUME_TASK]: "resume_task",
-		[ClineAsk.RESUME_COMPLETED_TASK]: "resume_completed_task",
-		[ClineAsk.MISTAKE_LIMIT_REACHED]: "mistake_limit_reached",
-		[ClineAsk.AUTO_APPROVAL_MAX_REQ_REACHED]: "auto_approval_max_req_reached",
-		[ClineAsk.BROWSER_ACTION_LAUNCH]: "browser_action_launch",
-		[ClineAsk.USE_MCP_SERVER]: "use_mcp_server",
-		[ClineAsk.NEW_TASK]: "new_task",
-		[ClineAsk.CONDENSE]: "condense",
-		[ClineAsk.REPORT_BUG]: "report_bug",
+	const mapping: Record<Exclude<nAgentCoderAIAsk, nAgentCoderAIAsk.UNRECOGNIZED>, AppnAgentCoderAIAsk> = {
+		[nAgentCoderAIAsk.FOLLOWUP]: "followup",
+		[nAgentCoderAIAsk.PLAN_MODE_RESPOND]: "plan_mode_respond",
+		[nAgentCoderAIAsk.COMMAND]: "command",
+		[nAgentCoderAIAsk.COMMAND_OUTPUT]: "command_output",
+		[nAgentCoderAIAsk.COMPLETION_RESULT]: "completion_result",
+		[nAgentCoderAIAsk.TOOL]: "tool",
+		[nAgentCoderAIAsk.API_REQ_FAILED]: "api_req_failed",
+		[nAgentCoderAIAsk.RESUME_TASK]: "resume_task",
+		[nAgentCoderAIAsk.RESUME_COMPLETED_TASK]: "resume_completed_task",
+		[nAgentCoderAIAsk.MISTAKE_LIMIT_REACHED]: "mistake_limit_reached",
+		[nAgentCoderAIAsk.AUTO_APPROVAL_MAX_REQ_REACHED]: "auto_approval_max_req_reached",
+		[nAgentCoderAIAsk.BROWSER_ACTION_LAUNCH]: "browser_action_launch",
+		[nAgentCoderAIAsk.USE_MCP_SERVER]: "use_mcp_server",
+		[nAgentCoderAIAsk.NEW_TASK]: "new_task",
+		[nAgentCoderAIAsk.CONDENSE]: "condense",
+		[nAgentCoderAIAsk.REPORT_BUG]: "report_bug",
 	}
 
 	return mapping[ask]
 }
 
-// Helper function to convert ClineSay string to enum
-function convertClineSayToProtoEnum(say: AppClineSay | undefined): ClineSay | undefined {
+// Helper function to convert nAgentCoderAISay string to enum
+function convertnAgentCoderAISayToProtoEnum(say: AppnAgentCoderAISay | undefined): nAgentCoderAISay | undefined {
 	if (!say) {
 		return undefined
 	}
 
-	const mapping: Record<AppClineSay, ClineSay> = {
-		task: ClineSay.TASK,
-		error: ClineSay.ERROR,
-		api_req_started: ClineSay.API_REQ_STARTED,
-		api_req_finished: ClineSay.API_REQ_FINISHED,
-		text: ClineSay.TEXT,
-		reasoning: ClineSay.REASONING,
-		completion_result: ClineSay.COMPLETION_RESULT_SAY,
-		user_feedback: ClineSay.USER_FEEDBACK,
-		user_feedback_diff: ClineSay.USER_FEEDBACK_DIFF,
-		api_req_retried: ClineSay.API_REQ_RETRIED,
-		command: ClineSay.COMMAND_SAY,
-		command_output: ClineSay.COMMAND_OUTPUT_SAY,
-		tool: ClineSay.TOOL_SAY,
-		shell_integration_warning: ClineSay.SHELL_INTEGRATION_WARNING,
-		browser_action_launch: ClineSay.BROWSER_ACTION_LAUNCH_SAY,
-		browser_action: ClineSay.BROWSER_ACTION,
-		browser_action_result: ClineSay.BROWSER_ACTION_RESULT,
-		mcp_server_request_started: ClineSay.MCP_SERVER_REQUEST_STARTED,
-		mcp_server_response: ClineSay.MCP_SERVER_RESPONSE,
-		mcp_notification: ClineSay.MCP_NOTIFICATION,
-		use_mcp_server: ClineSay.USE_MCP_SERVER_SAY,
-		diff_error: ClineSay.DIFF_ERROR,
-		deleted_api_reqs: ClineSay.DELETED_API_REQS,
-		clineignore_error: ClineSay.CLINEIGNORE_ERROR,
-		checkpoint_created: ClineSay.CHECKPOINT_CREATED,
-		load_mcp_documentation: ClineSay.LOAD_MCP_DOCUMENTATION,
-		info: ClineSay.INFO,
+	const mapping: Record<AppnAgentCoderAISay, nAgentCoderAISay> = {
+		task: nAgentCoderAISay.TASK,
+		error: nAgentCoderAISay.ERROR,
+		api_req_started: nAgentCoderAISay.API_REQ_STARTED,
+		api_req_finished: nAgentCoderAISay.API_REQ_FINISHED,
+		text: nAgentCoderAISay.TEXT,
+		reasoning: nAgentCoderAISay.REASONING,
+		completion_result: nAgentCoderAISay.COMPLETION_RESULT_SAY,
+		user_feedback: nAgentCoderAISay.USER_FEEDBACK,
+		user_feedback_diff: nAgentCoderAISay.USER_FEEDBACK_DIFF,
+		api_req_retried: nAgentCoderAISay.API_REQ_RETRIED,
+		command: nAgentCoderAISay.COMMAND_SAY,
+		command_output: nAgentCoderAISay.COMMAND_OUTPUT_SAY,
+		tool: nAgentCoderAISay.TOOL_SAY,
+		shell_integration_warning: nAgentCoderAISay.SHELL_INTEGRATION_WARNING,
+		browser_action_launch: nAgentCoderAISay.BROWSER_ACTION_LAUNCH_SAY,
+		browser_action: nAgentCoderAISay.BROWSER_ACTION,
+		browser_action_result: nAgentCoderAISay.BROWSER_ACTION_RESULT,
+		mcp_server_request_started: nAgentCoderAISay.MCP_SERVER_REQUEST_STARTED,
+		mcp_server_response: nAgentCoderAISay.MCP_SERVER_RESPONSE,
+		mcp_notification: nAgentCoderAISay.MCP_NOTIFICATION,
+		use_mcp_server: nAgentCoderAISay.USE_MCP_SERVER_SAY,
+		diff_error: nAgentCoderAISay.DIFF_ERROR,
+		deleted_api_reqs: nAgentCoderAISay.DELETED_API_REQS,
+		nagentcoderaiignore_error: nAgentCoderAISay.CLINEIGNORE_ERROR,
+		checkpoint_created: nAgentCoderAISay.CHECKPOINT_CREATED,
+		load_mcp_documentation: nAgentCoderAISay.LOAD_MCP_DOCUMENTATION,
+		info: nAgentCoderAISay.INFO,
 	}
 
 	const result = mapping[say]
 	if (result === undefined) {
-		console.warn(`Unknown ClineSay value: ${say}`)
+		console.warn(`Unknown nAgentCoderAISay value: ${say}`)
 	}
 	return result
 }
 
-// Helper function to convert ClineSay enum to string
-function convertProtoEnumToClineSay(say: ClineSay): AppClineSay | undefined {
-	if (say === ClineSay.UNRECOGNIZED) {
-		console.warn("Received UNRECOGNIZED ClineSay enum value")
+// Helper function to convert nAgentCoderAISay enum to string
+function convertProtoEnumTonAgentCoderAISay(say: nAgentCoderAISay): AppnAgentCoderAISay | undefined {
+	if (say === nAgentCoderAISay.UNRECOGNIZED) {
+		console.warn("Received UNRECOGNIZED nAgentCoderAISay enum value")
 		return undefined
 	}
 
-	const mapping: Record<Exclude<ClineSay, ClineSay.UNRECOGNIZED>, AppClineSay> = {
-		[ClineSay.TASK]: "task",
-		[ClineSay.ERROR]: "error",
-		[ClineSay.API_REQ_STARTED]: "api_req_started",
-		[ClineSay.API_REQ_FINISHED]: "api_req_finished",
-		[ClineSay.TEXT]: "text",
-		[ClineSay.REASONING]: "reasoning",
-		[ClineSay.COMPLETION_RESULT_SAY]: "completion_result",
-		[ClineSay.USER_FEEDBACK]: "user_feedback",
-		[ClineSay.USER_FEEDBACK_DIFF]: "user_feedback_diff",
-		[ClineSay.API_REQ_RETRIED]: "api_req_retried",
-		[ClineSay.COMMAND_SAY]: "command",
-		[ClineSay.COMMAND_OUTPUT_SAY]: "command_output",
-		[ClineSay.TOOL_SAY]: "tool",
-		[ClineSay.SHELL_INTEGRATION_WARNING]: "shell_integration_warning",
-		[ClineSay.BROWSER_ACTION_LAUNCH_SAY]: "browser_action_launch",
-		[ClineSay.BROWSER_ACTION]: "browser_action",
-		[ClineSay.BROWSER_ACTION_RESULT]: "browser_action_result",
-		[ClineSay.MCP_SERVER_REQUEST_STARTED]: "mcp_server_request_started",
-		[ClineSay.MCP_SERVER_RESPONSE]: "mcp_server_response",
-		[ClineSay.MCP_NOTIFICATION]: "mcp_notification",
-		[ClineSay.USE_MCP_SERVER_SAY]: "use_mcp_server",
-		[ClineSay.DIFF_ERROR]: "diff_error",
-		[ClineSay.DELETED_API_REQS]: "deleted_api_reqs",
-		[ClineSay.CLINEIGNORE_ERROR]: "clineignore_error",
-		[ClineSay.CHECKPOINT_CREATED]: "checkpoint_created",
-		[ClineSay.LOAD_MCP_DOCUMENTATION]: "load_mcp_documentation",
-		[ClineSay.INFO]: "info",
+	const mapping: Record<Exclude<nAgentCoderAISay, nAgentCoderAISay.UNRECOGNIZED>, AppnAgentCoderAISay> = {
+		[nAgentCoderAISay.TASK]: "task",
+		[nAgentCoderAISay.ERROR]: "error",
+		[nAgentCoderAISay.API_REQ_STARTED]: "api_req_started",
+		[nAgentCoderAISay.API_REQ_FINISHED]: "api_req_finished",
+		[nAgentCoderAISay.TEXT]: "text",
+		[nAgentCoderAISay.REASONING]: "reasoning",
+		[nAgentCoderAISay.COMPLETION_RESULT_SAY]: "completion_result",
+		[nAgentCoderAISay.USER_FEEDBACK]: "user_feedback",
+		[nAgentCoderAISay.USER_FEEDBACK_DIFF]: "user_feedback_diff",
+		[nAgentCoderAISay.API_REQ_RETRIED]: "api_req_retried",
+		[nAgentCoderAISay.COMMAND_SAY]: "command",
+		[nAgentCoderAISay.COMMAND_OUTPUT_SAY]: "command_output",
+		[nAgentCoderAISay.TOOL_SAY]: "tool",
+		[nAgentCoderAISay.SHELL_INTEGRATION_WARNING]: "shell_integration_warning",
+		[nAgentCoderAISay.BROWSER_ACTION_LAUNCH_SAY]: "browser_action_launch",
+		[nAgentCoderAISay.BROWSER_ACTION]: "browser_action",
+		[nAgentCoderAISay.BROWSER_ACTION_RESULT]: "browser_action_result",
+		[nAgentCoderAISay.MCP_SERVER_REQUEST_STARTED]: "mcp_server_request_started",
+		[nAgentCoderAISay.MCP_SERVER_RESPONSE]: "mcp_server_response",
+		[nAgentCoderAISay.MCP_NOTIFICATION]: "mcp_notification",
+		[nAgentCoderAISay.USE_MCP_SERVER_SAY]: "use_mcp_server",
+		[nAgentCoderAISay.DIFF_ERROR]: "diff_error",
+		[nAgentCoderAISay.DELETED_API_REQS]: "deleted_api_reqs",
+		[nAgentCoderAISay.CLINEIGNORE_ERROR]: "nagentcoderaiignore_error",
+		[nAgentCoderAISay.CHECKPOINT_CREATED]: "checkpoint_created",
+		[nAgentCoderAISay.LOAD_MCP_DOCUMENTATION]: "load_mcp_documentation",
+		[nAgentCoderAISay.INFO]: "info",
 	}
 
 	return mapping[say]
 }
 
 /**
- * Convert application ClineMessage to proto ClineMessage
+ * Convert application nAgentCoderAIMessage to proto nAgentCoderAIMessage
  */
-export function convertClineMessageToProto(message: AppClineMessage): ProtoClineMessage {
+export function convertnAgentCoderAIMessageToProto(message: AppnAgentCoderAIMessage): ProtonAgentCoderAIMessage {
 	// For sending messages, we need to provide values for required proto fields
-	const askEnum = message.ask ? convertClineAskToProtoEnum(message.ask) : undefined
-	const sayEnum = message.say ? convertClineSayToProtoEnum(message.say) : undefined
+	const askEnum = message.ask ? convertnAgentCoderAIAskToProtoEnum(message.ask) : undefined
+	const sayEnum = message.say ? convertnAgentCoderAISayToProtoEnum(message.say) : undefined
 
 	// Determine appropriate enum values based on message type
-	let finalAskEnum: ClineAsk = ClineAsk.FOLLOWUP // Proto default
-	let finalSayEnum: ClineSay = ClineSay.TEXT // Proto default
+	let finalAskEnum: nAgentCoderAIAsk = nAgentCoderAIAsk.FOLLOWUP // Proto default
+	let finalSayEnum: nAgentCoderAISay = nAgentCoderAISay.TEXT // Proto default
 
 	if (message.type === "ask") {
-		finalAskEnum = askEnum ?? ClineAsk.FOLLOWUP // Use FOLLOWUP as default for ask messages
+		finalAskEnum = askEnum ?? nAgentCoderAIAsk.FOLLOWUP // Use FOLLOWUP as default for ask messages
 	} else if (message.type === "say") {
-		finalSayEnum = sayEnum ?? ClineSay.TEXT // Use TEXT as default for say messages
+		finalSayEnum = sayEnum ?? nAgentCoderAISay.TEXT // Use TEXT as default for say messages
 	}
 
-	const protoMessage: ProtoClineMessage = {
+	const protoMessage: ProtonAgentCoderAIMessage = {
 		ts: message.ts,
-		type: message.type === "ask" ? ClineMessageType.ASK : ClineMessageType.SAY,
+		type: message.type === "ask" ? nAgentCoderAIMessageType.ASK : nAgentCoderAIMessageType.SAY,
 		ask: finalAskEnum,
 		say: finalSayEnum,
 		text: message.text ?? "",
@@ -190,25 +190,25 @@ export function convertClineMessageToProto(message: AppClineMessage): ProtoCline
 }
 
 /**
- * Convert proto ClineMessage to application ClineMessage
+ * Convert proto nAgentCoderAIMessage to application nAgentCoderAIMessage
  */
-export function convertProtoToClineMessage(protoMessage: ProtoClineMessage): AppClineMessage {
-	const message: AppClineMessage = {
+export function convertProtoTonAgentCoderAIMessage(protoMessage: ProtonAgentCoderAIMessage): AppnAgentCoderAIMessage {
+	const message: AppnAgentCoderAIMessage = {
 		ts: protoMessage.ts,
-		type: protoMessage.type === ClineMessageType.ASK ? "ask" : "say",
+		type: protoMessage.type === nAgentCoderAIMessageType.ASK ? "ask" : "say",
 	}
 
 	// Convert ask enum to string
-	if (protoMessage.type === ClineMessageType.ASK) {
-		const ask = convertProtoEnumToClineAsk(protoMessage.ask)
+	if (protoMessage.type === nAgentCoderAIMessageType.ASK) {
+		const ask = convertProtoEnumTonAgentCoderAIAsk(protoMessage.ask)
 		if (ask !== undefined) {
 			message.ask = ask
 		}
 	}
 
 	// Convert say enum to string
-	if (protoMessage.type === ClineMessageType.SAY) {
-		const say = convertProtoEnumToClineSay(protoMessage.say)
+	if (protoMessage.type === nAgentCoderAIMessageType.SAY) {
+		const say = convertProtoEnumTonAgentCoderAISay(protoMessage.say)
 		if (say !== undefined) {
 			message.say = say
 		}

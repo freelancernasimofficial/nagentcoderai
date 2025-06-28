@@ -12,7 +12,7 @@ import { OPENROUTER_MODEL_PICKER_Z_INDEX } from "./OpenRouterModelPicker"
 
 import { normalizeApiConfiguration } from "./utils/providerUtils"
 
-import { ClineProvider } from "./providers/ClineProvider"
+import { nAgentCoderAIProvider } from "./providers/nAgentCoderAIProvider"
 import { OpenRouterProvider } from "./providers/OpenRouterProvider"
 import { MistralProvider } from "./providers/MistralProvider"
 import { DeepSeekProvider } from "./providers/DeepSeekProvider"
@@ -167,7 +167,7 @@ const ApiOptions = ({
 						minWidth: 130,
 						position: "relative",
 					}}>
-					<VSCodeOption value="cline">Cline</VSCodeOption>
+					<VSCodeOption value="nagentcoderai">nAgentCoderAI</VSCodeOption>
 					<VSCodeOption value="openrouter">OpenRouter</VSCodeOption>
 					<VSCodeOption value="anthropic">Anthropic</VSCodeOption>
 					<VSCodeOption value="claude-code">Claude Code</VSCodeOption>
@@ -197,8 +197,8 @@ const ApiOptions = ({
 				</VSCodeDropdown>
 			</DropdownContainer>
 
-			{apiConfiguration && selectedProvider === "cline" && (
-				<ClineProvider
+			{apiConfiguration && selectedProvider === "nagentcoderai" && (
+				<nAgentCoderAIProvider
 					apiConfiguration={apiConfiguration}
 					handleInputChange={handleInputChange}
 					showModelOptions={showModelOptions}

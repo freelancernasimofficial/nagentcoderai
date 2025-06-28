@@ -1,6 +1,6 @@
 export type SecretKey =
 	| "apiKey"
-	| "clineApiKey"
+	| "nagentcoderaiApiKey"
 	| "openRouterApiKey"
 	| "awsAccessKey"
 	| "awsSecretKey"
@@ -49,7 +49,7 @@ export type GlobalStateKey =
 	| "azureApiVersion"
 	| "openRouterProviderSorting"
 	| "autoApprovalSettings"
-	| "globalClineRulesToggles"
+	| "globalNAgentRulesToggles"
 	| "globalWorkflowToggles"
 	| "browserSettings"
 	| "userInfo"
@@ -82,7 +82,7 @@ export type GlobalStateKey =
 	| "claudeCodePath"
 
 export type LocalStateKey =
-	| "localClineRulesToggles"
+	| "localNAgentRulesToggles"
 	| "chatSettings"
 	// Current active model configuration (per workspace)
 	| "apiProvider"

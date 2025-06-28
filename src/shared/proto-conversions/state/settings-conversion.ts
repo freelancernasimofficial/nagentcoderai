@@ -17,7 +17,7 @@ export function convertApiConfigurationToProtoApiConfiguration(config: ApiConfig
 		apiKey: config.apiKey,
 
 		// Provider-specific API keys
-		clineApiKey: config.clineApiKey,
+		nagentcoderaiApiKey: config.nagentcoderaiApiKey,
 		openrouterApiKey: config.openRouterApiKey,
 		anthropicBaseUrl: config.anthropicBaseUrl,
 		openaiApiKey: config.openAiApiKey,
@@ -137,7 +137,7 @@ export function convertProtoApiConfigurationToApiConfiguration(protoConfig: Prot
 		apiKey: protoConfig.apiKey,
 
 		// Provider-specific API keys
-		clineApiKey: protoConfig.clineApiKey,
+		nagentcoderaiApiKey: protoConfig.nagentcoderaiApiKey,
 		openRouterApiKey: protoConfig.openrouterApiKey,
 		anthropicBaseUrl: protoConfig.anthropicBaseUrl,
 		openAiApiKey: protoConfig.openaiApiKey,

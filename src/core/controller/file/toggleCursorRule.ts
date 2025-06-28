@@ -1,8 +1,8 @@
 import type { ToggleCursorRuleRequest } from "../../../shared/proto/file"
-import { ClineRulesToggles } from "../../../shared/proto/file"
+import { NAgentRulesToggles } from "../../../shared/proto/file"
 import type { Controller } from "../index"
 import { getWorkspaceState, updateWorkspaceState } from "../../../core/storage/state"
-import { ClineRulesToggles as AppClineRulesToggles } from "@shared/cline-rules"
+import { NAgentRulesToggles as AppNAgentRulesToggles } from "@shared/nagent-rules"
 
 /**
  * Toggles a Cursor rule (enable or disable)
@@ -10,7 +10,7 @@ import { ClineRulesToggles as AppClineRulesToggles } from "@shared/cline-rules"
  * @param request The toggle request
  * @returns The updated Cursor rule toggles
  */
-export async function toggleCursorRule(controller: Controller, request: ToggleCursorRuleRequest): Promise<ClineRulesToggles> {
+export async function toggleCursorRule(controller: Controller, request: ToggleCursorRuleRequest): Promise<NAgentRulesToggles> {
 	const { rulePath, enabled } = request
 
 	if (!rulePath || typeof enabled !== "boolean") {
@@ -22,14 +22,14 @@ export async function toggleCursorRule(controller: Controller, request: ToggleCu
 	}
 
 	// Update the toggles in workspace state
-	const toggles = ((await getWorkspaceState(controller.context, "localCursorRulesToggles")) as AppClineRulesToggles) || {}
+	const toggles = ((await getWorkspaceState(controller.context, "localCursorRulesToggles")) as AppNAgentRulesToggles) || {}
 	toggles[rulePath] = enabled
 	await updateWorkspaceState(controller.context, "localCursorRulesToggles", toggles)
 
 	// Get the current state to return in the response
-	const cursorToggles = ((await getWorkspaceState(controller.context, "localCursorRulesToggles")) as AppClineRulesToggles) || {}
+	const cursorToggles = ((await getWorkspaceState(controller.context, "localCursorRulesToggles")) as AppNAgentRulesToggles) || {}
 
-	return ClineRulesToggles.create({
+	return NAgentRulesToggles.create({
 		toggles: cursorToggles,
 	})
 }

@@ -1,14 +1,14 @@
 import { ApiConfiguration } from "@shared/api"
 import { VSCodeCheckbox, VSCodeDropdown, VSCodeOption } from "@vscode/webview-ui-toolkit/react"
 import { useState } from "react"
-import { ClineAccountInfoCard } from "../ClineAccountInfoCard"
+import { nAgentCoderAIAccountInfoCard } from "../nAgentCoderAIAccountInfoCard"
 import OpenRouterModelPicker, { OPENROUTER_MODEL_PICKER_Z_INDEX } from "../OpenRouterModelPicker"
 import { DropdownContainer } from "../common/ModelSelector"
 
 /**
- * Props for the ClineProvider component
+ * Props for the nAgentCoderAIProvider component
  */
-interface ClineProviderProps {
+interface nAgentCoderAIProviderProps {
 	apiConfiguration: ApiConfiguration
 	handleInputChange: (field: keyof ApiConfiguration) => (event: any) => void
 	showModelOptions: boolean
@@ -16,9 +16,9 @@ interface ClineProviderProps {
 }
 
 /**
- * The Cline provider configuration component
+ * The nAgentCoderAI provider configuration component
  */
-export const ClineProvider = ({ apiConfiguration, handleInputChange, showModelOptions, isPopup }: ClineProviderProps) => {
+export const nAgentCoderAIProvider = ({ apiConfiguration, handleInputChange, showModelOptions, isPopup }: nAgentCoderAIProviderProps) => {
 	const [providerSortingSelected, setProviderSortingSelected] = useState(!!apiConfiguration?.openRouterProviderSorting)
 
 	// Create a wrapper for handling field changes more directly
@@ -28,9 +28,9 @@ export const ClineProvider = ({ apiConfiguration, handleInputChange, showModelOp
 
 	return (
 		<div>
-			{/* Cline Account Info Card */}
+			{/* nAgentCoderAI Account Info Card */}
 			<div style={{ marginBottom: 14, marginTop: 4 }}>
-				<ClineAccountInfoCard />
+				<nAgentCoderAIAccountInfoCard />
 			</div>
 
 			{showModelOptions && (

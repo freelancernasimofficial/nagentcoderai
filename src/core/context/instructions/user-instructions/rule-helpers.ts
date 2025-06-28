@@ -3,7 +3,7 @@ import { ensureRulesDirectoryExists, ensureWorkflowsDirectoryExists, GlobalFileN
 import { getGlobalState, getWorkspaceState, updateGlobalState, updateWorkspaceState } from "@core/storage/state"
 import * as path from "path"
 import fs from "fs/promises"
-import { ClineRulesToggles } from "@shared/cline-rules"
+import { NAgentRulesToggles } from "@shared/nagent-rules"
 import * as vscode from "vscode"
 
 /**
@@ -38,10 +38,10 @@ export async function readDirectoryRecursive(
  */
 export async function synchronizeRuleToggles(
 	rulesDirectoryPath: string,
-	currentToggles: ClineRulesToggles,
+	currentToggles: NAgentRulesToggles,
 	allowedFileExtension: string = "",
 	excludedPaths: string[][] = [],
-): Promise<ClineRulesToggles> {
+): Promise<NAgentRulesToggles> {
 	// Create a copy of toggles to modify
 	const updatedToggles = { ...currentToggles }
 
@@ -105,14 +105,14 @@ export async function synchronizeRuleToggles(
 /**
  * Certain project rules have more than a single location where rules are allowed to be stored
  */
-export function combineRuleToggles(toggles1: ClineRulesToggles, toggles2: ClineRulesToggles): ClineRulesToggles {
+export function combineRuleToggles(toggles1: NAgentRulesToggles, toggles2: NAgentRulesToggles): NAgentRulesToggles {
 	return { ...toggles1, ...toggles2 }
 }
 
 /**
  * Read the content of rules files
  */
-export const getRuleFilesTotalContent = async (rulesFilePaths: string[], basePath: string, toggles: ClineRulesToggles) => {
+export const getRuleFilesTotalContent = async (rulesFilePaths: string[], basePath: string, toggles: NAgentRulesToggles) => {
 	const ruleFilesTotalContent = await Promise.all(
 		rulesFilePaths.map(async (filePath) => {
 			const ruleFilePath = path.resolve(basePath, filePath)
@@ -129,31 +129,31 @@ export const getRuleFilesTotalContent = async (rulesFilePaths: string[], basePat
 }
 
 /**
- * Handles converting any directory into a file (specifically used for .clinerules and .clinerules/workflows)
- * The old .clinerules file or .clinerules/workflows file will be renamed to a default filename
+ * Handles converting any directory into a file (specifically used for .nagentrules and .nagentrules/workflows)
+ * The old .nagentrules file or .nagentrules/workflows file will be renamed to a default filename
  * Doesn't do anything if the dir already exists or doesn't exist
  * Returns whether there are any uncaught errors
  */
-export async function ensureLocalClineDirExists(clinerulePath: string, defaultRuleFilename: string): Promise<boolean> {
+export async function ensureLocalnAgentCoderAIDirExists(nagentcoderairulePath: string, defaultRuleFilename: string): Promise<boolean> {
 	try {
-		const exists = await fileExistsAtPath(clinerulePath)
+		const exists = await fileExistsAtPath(nagentcoderairulePath)
 
-		if (exists && !(await isDirectory(clinerulePath))) {
-			// logic to convert .clinerules file into directory, and rename the rules file to {defaultRuleFilename}
-			const content = await fs.readFile(clinerulePath, "utf8")
-			const tempPath = clinerulePath + ".bak"
-			await fs.rename(clinerulePath, tempPath) // create backup
+		if (exists && !(await isDirectory(nagentcoderairulePath))) {
+			// logic to convert .nagentrules file into directory, and rename the rules file to {defaultRuleFilename}
+			const content = await fs.readFile(nagentcoderairulePath, "utf8")
+			const tempPath = nagentcoderairulePath + ".bak"
+			await fs.rename(nagentcoderairulePath, tempPath) // create backup
 			try {
-				await fs.mkdir(clinerulePath, { recursive: true })
-				await fs.writeFile(path.join(clinerulePath, defaultRuleFilename), content, "utf8")
+				await fs.mkdir(nagentcoderairulePath, { recursive: true })
+				await fs.writeFile(path.join(nagentcoderairulePath, defaultRuleFilename), content, "utf8")
 				await fs.unlink(tempPath).catch(() => {}) // delete backup
 
 				return false // conversion successful with no errors
 			} catch (conversionError) {
 				// attempt to restore backup on conversion failure
 				try {
-					await fs.rm(clinerulePath, { recursive: true, force: true }).catch(() => {})
-					await fs.rename(tempPath, clinerulePath) // restore backup
+					await fs.rm(nagentcoderairulePath, { recursive: true, force: true }).catch(() => {})
+					await fs.rename(tempPath, nagentcoderairulePath) // restore backup
 				} catch (restoreError) {}
 				return true // in either case here we consider this an error
 			}
@@ -173,26 +173,26 @@ export const createRuleFile = async (isGlobal: boolean, filename: string, cwd: s
 		let filePath: string
 		if (isGlobal) {
 			if (type === "workflow") {
-				const globalClineWorkflowFilePath = await ensureWorkflowsDirectoryExists()
-				filePath = path.join(globalClineWorkflowFilePath, filename)
+				const globalnAgentCoderAIWorkflowFilePath = await ensureWorkflowsDirectoryExists()
+				filePath = path.join(globalnAgentCoderAIWorkflowFilePath, filename)
 			} else {
-				const globalClineRulesFilePath = await ensureRulesDirectoryExists()
-				filePath = path.join(globalClineRulesFilePath, filename)
+				const globalNAgentRulesFilePath = await ensureRulesDirectoryExists()
+				filePath = path.join(globalNAgentRulesFilePath, filename)
 			}
 		} else {
-			const localClineRulesFilePath = path.resolve(cwd, GlobalFileNames.clineRules)
+			const localNAgentRulesFilePath = path.resolve(cwd, GlobalFileNames.nagentRules)
 
-			const hasError = await ensureLocalClineDirExists(localClineRulesFilePath, "default-rules.md")
+			const hasError = await ensureLocalnAgentCoderAIDirExists(localNAgentRulesFilePath, "default-rules.md")
 			if (hasError === true) {
 				return { filePath: null, fileExists: false }
 			}
 
-			await fs.mkdir(localClineRulesFilePath, { recursive: true })
+			await fs.mkdir(localNAgentRulesFilePath, { recursive: true })
 
 			if (type === "workflow") {
 				const localWorkflowsFilePath = path.resolve(cwd, GlobalFileNames.workflows)
 
-				const hasError = await ensureLocalClineDirExists(localWorkflowsFilePath, "default-workflows.md")
+				const hasError = await ensureLocalnAgentCoderAIDirExists(localWorkflowsFilePath, "default-workflows.md")
 				if (hasError === true) {
 					return { filePath: null, fileExists: false }
 				}
@@ -201,8 +201,8 @@ export const createRuleFile = async (isGlobal: boolean, filename: string, cwd: s
 
 				filePath = path.join(localWorkflowsFilePath, filename)
 			} else {
-				// clinerules file creation
-				filePath = path.join(localClineRulesFilePath, filename)
+				// nagentcoderairules file creation
+				filePath = path.join(localNAgentRulesFilePath, filename)
 			}
 		}
 
@@ -248,31 +248,31 @@ export async function deleteRuleFile(
 		// Update the appropriate toggles
 		if (isGlobal) {
 			if (type === "workflow") {
-				const toggles = ((await getGlobalState(context, "globalWorkflowToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getGlobalState(context, "globalWorkflowToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
 				await updateGlobalState(context, "globalWorkflowToggles", toggles)
 			} else {
-				const toggles = ((await getGlobalState(context, "globalClineRulesToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getGlobalState(context, "globalNAgentRulesToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
-				await updateGlobalState(context, "globalClineRulesToggles", toggles)
+				await updateGlobalState(context, "globalNAgentRulesToggles", toggles)
 			}
 		} else {
 			if (type === "workflow") {
-				const toggles = ((await getWorkspaceState(context, "workflowToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getWorkspaceState(context, "workflowToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
 				await updateWorkspaceState(context, "workflowToggles", toggles)
 			} else if (type === "cursor") {
-				const toggles = ((await getWorkspaceState(context, "localCursorRulesToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getWorkspaceState(context, "localCursorRulesToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
 				await updateWorkspaceState(context, "localCursorRulesToggles", toggles)
 			} else if (type === "windsurf") {
-				const toggles = ((await getWorkspaceState(context, "localWindsurfRulesToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getWorkspaceState(context, "localWindsurfRulesToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
 				await updateWorkspaceState(context, "localWindsurfRulesToggles", toggles)
 			} else {
-				const toggles = ((await getWorkspaceState(context, "localClineRulesToggles")) as ClineRulesToggles) || {}
+				const toggles = ((await getWorkspaceState(context, "localNAgentRulesToggles")) as NAgentRulesToggles) || {}
 				delete toggles[rulePath]
-				await updateWorkspaceState(context, "localClineRulesToggles", toggles)
+				await updateWorkspaceState(context, "localNAgentRulesToggles", toggles)
 			}
 		}
 

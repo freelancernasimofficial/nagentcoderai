@@ -3,7 +3,7 @@ import * as vscode from "vscode"
 import fs from "fs/promises"
 import { Anthropic } from "@anthropic-ai/sdk"
 import { fileExistsAtPath } from "@utils/fs"
-import { ClineMessage } from "@shared/ExtensionMessage"
+import { nAgentCoderAIMessage } from "@shared/ExtensionMessage"
 import { TaskMetadata } from "@core/context/context-tracking/ContextTrackerTypes"
 import os from "os"
 import { execa } from "@packages/execa"
@@ -13,9 +13,9 @@ export const GlobalFileNames = {
 	contextHistory: "context_history.json",
 	uiMessages: "ui_messages.json",
 	openRouterModels: "openrouter_models.json",
-	mcpSettings: "cline_mcp_settings.json",
-	clineRules: ".clinerules",
-	workflows: ".clinerules/workflows",
+	mcpSettings: "nagent_mcp_settings.json",
+	nagentRules: ".nagentrules",
+	workflows: ".nagentrules/workflows",
 	cursorRulesDir: ".cursor/rules",
 	cursorRulesFile: ".cursorrules",
 	windsurfRules: ".windsurfrules",
@@ -67,33 +67,33 @@ export async function ensureTaskDirectoryExists(context: vscode.ExtensionContext
 
 export async function ensureRulesDirectoryExists(): Promise<string> {
 	const userDocumentsPath = await getDocumentsPath()
-	const clineRulesDir = path.join(userDocumentsPath, "Cline", "Rules")
+	const nagentRulesDir = path.join(userDocumentsPath, "nAgentCoderAI", "Rules")
 	try {
-		await fs.mkdir(clineRulesDir, { recursive: true })
+		await fs.mkdir(nagentRulesDir, { recursive: true })
 	} catch (error) {
-		return path.join(os.homedir(), "Documents", "Cline", "Rules") // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine because we will fail gracefully with a path that does not exist
+		return path.join(os.homedir(), "Documents", "nAgentCoderAI", "Rules") // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine because we will fail gracefully with a path that does not exist
 	}
-	return clineRulesDir
+	return nagentRulesDir
 }
 
 export async function ensureWorkflowsDirectoryExists(): Promise<string> {
 	const userDocumentsPath = await getDocumentsPath()
-	const clineWorkflowsDir = path.join(userDocumentsPath, "Cline", "Workflows")
+	const nagentcoderaiWorkflowsDir = path.join(userDocumentsPath, "nAgentCoderAI", "Workflows")
 	try {
-		await fs.mkdir(clineWorkflowsDir, { recursive: true })
+		await fs.mkdir(nagentcoderaiWorkflowsDir, { recursive: true })
 	} catch (error) {
-		return path.join(os.homedir(), "Documents", "Cline", "Workflows") // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine because we will fail gracefully with a path that does not exist
+		return path.join(os.homedir(), "Documents", "nAgentCoderAI", "Workflows") // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine because we will fail gracefully with a path that does not exist
 	}
-	return clineWorkflowsDir
+	return nagentcoderaiWorkflowsDir
 }
 
 export async function ensureMcpServersDirectoryExists(): Promise<string> {
 	const userDocumentsPath = await getDocumentsPath()
-	const mcpServersDir = path.join(userDocumentsPath, "Cline", "MCP")
+	const mcpServersDir = path.join(userDocumentsPath, "nAgentCoderAI", "MCP")
 	try {
 		await fs.mkdir(mcpServersDir, { recursive: true })
 	} catch (error) {
-		return "~/Documents/Cline/MCP" // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine since this path is only ever used in the system prompt
+		return "~/Documents/nAgentCoderAI/MCP" // in case creating a directory in documents fails for whatever reason (e.g. permissions) - this is fine since this path is only ever used in the system prompt
 	}
 	return mcpServersDir
 }
@@ -130,7 +130,7 @@ export async function saveApiConversationHistory(
 	}
 }
 
-export async function getSavedClineMessages(context: vscode.ExtensionContext, taskId: string): Promise<ClineMessage[]> {
+export async function getSavednAgentCoderAIMessages(context: vscode.ExtensionContext, taskId: string): Promise<nAgentCoderAIMessage[]> {
 	const filePath = path.join(await ensureTaskDirectoryExists(context, taskId), GlobalFileNames.uiMessages)
 	if (await fileExistsAtPath(filePath)) {
 		return JSON.parse(await fs.readFile(filePath, "utf8"))
@@ -146,7 +146,7 @@ export async function getSavedClineMessages(context: vscode.ExtensionContext, ta
 	return []
 }
 
-export async function saveClineMessages(context: vscode.ExtensionContext, taskId: string, uiMessages: ClineMessage[]) {
+export async function savenAgentCoderAIMessages(context: vscode.ExtensionContext, taskId: string, uiMessages: nAgentCoderAIMessage[]) {
 	try {
 		const taskDir = await ensureTaskDirectoryExists(context, taskId)
 		const filePath = path.join(taskDir, GlobalFileNames.uiMessages)

@@ -12,8 +12,8 @@ import { Uri } from "vscode"
 import { ExtensionMessage } from "@/shared/ExtensionMessage"
 
 export abstract class WebviewProvider {
-	public static readonly sideBarId = "claude-dev.SidebarProvider" // used in package.json as the view's id. This value cannot be changed due to how vscode caches views based on their id, and updating the id would break existing instances of the extension.
-	public static readonly tabPanelId = "claude-dev.TabPanelProvider"
+	public static readonly sideBarId = "nagent-dev.SidebarProvider" // used in package.json as the view's id. This value cannot be changed due to how vscode caches views based on their id, and updating the id would break existing instances of the extension.
+	public static readonly tabPanelId = "nagent-dev.TabPanelProvider"
 	private static activeInstances: Set<WebviewProvider> = new Set()
 	private static clientIdMap = new Map<WebviewProvider, string>()
 	protected disposables: vscode.Disposable[] = []
@@ -62,7 +62,7 @@ export abstract class WebviewProvider {
 		return Array.from(this.activeInstances).find((instance) => {
 			if (
 				instance.getWebview() &&
-				instance.getWebview().viewType === "claude-dev.TabPanelProvider" &&
+				instance.getWebview().viewType === "nagent-dev.TabPanelProvider" &&
 				"active" in instance.getWebview()
 			) {
 				return instance.getWebview().active === true
@@ -200,12 +200,12 @@ export abstract class WebviewProvider {
 				<link href="${codiconsUri}" rel="stylesheet" />
 				<link href="${katexCssUri}" rel="stylesheet" />
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none';
-					connect-src https://*.posthog.com https://*.cline.bot https://*.firebaseauth.com https://*.firebaseio.com https://*.googleapis.com https://*.firebase.com; 
+					connect-src https://*.posthog.com https://*.nagentcoderai.bot https://*.firebaseauth.com https://*.firebaseio.com https://*.googleapis.com https://*.firebase.com; 
 					font-src ${this.getCspSource()} data:; 
 					style-src ${this.getCspSource()} 'unsafe-inline'; 
 					img-src ${this.getCspSource()} https: data:; 
 					script-src 'nonce-${nonce}' 'unsafe-eval';">
-				<title>Cline</title>
+				<title>nAgentCoderAI</title>
 			</head>
 			<body>
 				<noscript>You need to enable JavaScript to run this app.</noscript>
@@ -215,7 +215,7 @@ export abstract class WebviewProvider {
                     window.WEBVIEW_PROVIDER_TYPE = ${JSON.stringify(this.providerType)};
                     
                     // Inject the client ID
-                    window.clineClientId = "${this.clientId}";
+                    window.nagentcoderaiClientId = "${this.clientId}";
                 </script>
 				<script type="module" nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
@@ -264,7 +264,7 @@ export abstract class WebviewProvider {
 			await axios.get(`http://${localServerUrl}`)
 		} catch (error) {
 			vscode.window.showErrorMessage(
-				"Cline: Local webview dev server is not running, HMR will not work. Please run 'npm run dev:webview' before launching the extension to enable HMR. Using bundled assets.",
+				"nAgentCoderAI: Local webview dev server is not running, HMR will not work. Please run 'npm run dev:webview' before launching the extension to enable HMR. Using bundled assets.",
 			)
 
 			return this.getHtmlContent()
@@ -310,7 +310,7 @@ export abstract class WebviewProvider {
 					<link rel="stylesheet" type="text/css" href="${stylesUri}">
 					<link href="${codiconsUri}" rel="stylesheet" />
 					<link href="${katexCssUri}" rel="stylesheet" />
-					<title>Cline</title>
+					<title>nAgentCoderAI</title>
 				</head>
 				<body>
 					<div id="root"></div>
@@ -319,7 +319,7 @@ export abstract class WebviewProvider {
 						window.WEBVIEW_PROVIDER_TYPE = ${JSON.stringify(this.providerType)};
 						
 						// Inject the client ID
-						window.clineClientId = "${this.clientId}";
+						window.nagentcoderaiClientId = "${this.clientId}";
 					</script>
 					${reactRefresh}
 					<script type="module" src="${scriptUri}"></script>

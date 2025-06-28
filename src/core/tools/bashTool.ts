@@ -1,9 +1,9 @@
 export const bashToolName = "Bash"
 
-const CO_AUTHORED_COMMIT_MSG = `\uD83E\uDD16 Generated with [Cline](https://docs.cline.bot)
+const CO_AUTHORED_COMMIT_MSG = `\uD83E\uDD16 Generated with [nAgentCoderAI](https://github.com/freelancernasimofficial/nagentcoderai)
 
-   Co-Authored-By: Cline <noreply@cline.bot>`
-const CO_AUTHORED_PR_MSG = `\uD83E\uDD16 Generated with [Cline](https://docs.cline.bot)`
+   Co-Authored-By: nAgentCoderAI <noreply@fnsoftwares.com>`
+const CO_AUTHORED_PR_MSG = `\uD83E\uDD16 Generated with [nAgentCoderAI](https://github.com/freelancernasimofficial/nagentcoderai)`
 
 const descriptionForAgent = (
 	cwd: string,

@@ -1,5 +1,5 @@
 import { newTaskToolResponse, condenseToolResponse, newRuleToolResponse, reportBugToolResponse } from "../prompts/commands"
-import { ClineRulesToggles } from "@shared/cline-rules"
+import { NAgentRulesToggles } from "@shared/nagent-rules"
 import fs from "fs/promises"
 
 /**
@@ -8,9 +8,9 @@ import fs from "fs/promises"
  */
 export async function parseSlashCommands(
 	text: string,
-	localWorkflowToggles: ClineRulesToggles,
-	globalWorkflowToggles: ClineRulesToggles,
-): Promise<{ processedText: string; needsClinerulesFileCheck: boolean }> {
+	localWorkflowToggles: NAgentRulesToggles,
+	globalWorkflowToggles: NAgentRulesToggles,
+): Promise<{ processedText: string; needsnAgentCoderAIrulesFileCheck: boolean }> {
 	const SUPPORTED_DEFAULT_COMMANDS = ["newtask", "smol", "compact", "newrule", "reportbug"]
 
 	const commandReplacements: Record<string, string> = {
@@ -56,7 +56,7 @@ export async function parseSlashCommands(
 				const textWithoutSlashCommand = text.substring(0, slashCommandStartIndex) + text.substring(slashCommandEndIndex)
 				const processedText = commandReplacements[commandName] + textWithoutSlashCommand
 
-				return { processedText: processedText, needsClinerulesFileCheck: commandName === "newrule" ? true : false }
+				return { processedText: processedText, needsnAgentCoderAIrulesFileCheck: commandName === "newrule" ? true : false }
 			}
 
 			const globalWorkflows = Object.entries(globalWorkflowToggles)
@@ -106,7 +106,7 @@ export async function parseSlashCommands(
 						`<explicit_instructions type="${matchingWorkflow.fileName}">\n${workflowContent}\n</explicit_instructions>\n` +
 						textWithoutSlashCommand
 
-					return { processedText, needsClinerulesFileCheck: false }
+					return { processedText, needsnAgentCoderAIrulesFileCheck: false }
 				} catch (error) {
 					console.error(`Error reading workflow file ${matchingWorkflow.fullPath}: ${error}`)
 				}
@@ -115,5 +115,5 @@ export async function parseSlashCommands(
 	}
 
 	// if no supported commands are found, return the original text
-	return { processedText: text, needsClinerulesFileCheck: false }
+	return { processedText: text, needsnAgentCoderAIrulesFileCheck: false }
 }

@@ -5,9 +5,9 @@ import { FileServiceClient } from "@/services/grpc-client"
 import { vscode } from "@/utils/vscode"
 import { EmptyRequest } from "@shared/proto/common"
 import {
-	ClineRulesToggles,
+	nAgentCoderAIRulesToggles,
 	RefreshedRules,
-	ToggleClineRuleRequest,
+	TogglenAgentCoderAIRuleRequest,
 	ToggleCursorRuleRequest,
 	ToggleWindsurfRuleRequest,
 	ToggleWorkflowRequest,
@@ -18,16 +18,16 @@ import { useClickAway, useWindowSize } from "react-use"
 import styled from "styled-components"
 import RulesToggleList from "./RulesToggleList"
 
-const ClineRulesToggleModal: React.FC = () => {
+const nAgentCoderAIRulesToggleModal: React.FC = () => {
 	const {
-		globalClineRulesToggles = {},
-		localClineRulesToggles = {},
+		globalnAgentCoderAIRulesToggles = {},
+		localnAgentCoderAIRulesToggles = {},
 		localCursorRulesToggles = {},
 		localWindsurfRulesToggles = {},
 		localWorkflowToggles = {},
 		globalWorkflowToggles = {},
-		setGlobalClineRulesToggles,
-		setLocalClineRulesToggles,
+		setGlobalnAgentCoderAIRulesToggles,
+		setLocalnAgentCoderAIRulesToggles,
 		setLocalCursorRulesToggles,
 		setLocalWindsurfRulesToggles,
 		setLocalWorkflowToggles,
@@ -46,11 +46,11 @@ const ClineRulesToggleModal: React.FC = () => {
 			FileServiceClient.refreshRules({} as EmptyRequest)
 				.then((response: RefreshedRules) => {
 					// Update state with the response data using all available setters
-					if (response.globalClineRulesToggles?.toggles) {
-						setGlobalClineRulesToggles(response.globalClineRulesToggles.toggles)
+					if (response.globalnAgentCoderAIRulesToggles?.toggles) {
+						setGlobalnAgentCoderAIRulesToggles(response.globalnAgentCoderAIRulesToggles.toggles)
 					}
-					if (response.localClineRulesToggles?.toggles) {
-						setLocalClineRulesToggles(response.localClineRulesToggles.toggles)
+					if (response.localnAgentCoderAIRulesToggles?.toggles) {
+						setLocalnAgentCoderAIRulesToggles(response.localnAgentCoderAIRulesToggles.toggles)
 					}
 					if (response.localCursorRulesToggles?.toggles) {
 						setLocalCursorRulesToggles(response.localCursorRulesToggles.toggles)
@@ -72,12 +72,12 @@ const ClineRulesToggleModal: React.FC = () => {
 	}, [isVisible])
 
 	// Format global rules for display with proper typing
-	const globalRules = Object.entries(globalClineRulesToggles || {})
+	const globalRules = Object.entries(globalnAgentCoderAIRulesToggles || {})
 		.map(([path, enabled]): [string, boolean] => [path, enabled as boolean])
 		.sort(([a], [b]) => a.localeCompare(b))
 
 	// Format local rules for display with proper typing
-	const localRules = Object.entries(localClineRulesToggles || {})
+	const localRules = Object.entries(localnAgentCoderAIRulesToggles || {})
 		.map(([path, enabled]): [string, boolean] => [path, enabled as boolean])
 		.sort(([a], [b]) => a.localeCompare(b))
 
@@ -99,8 +99,8 @@ const ClineRulesToggleModal: React.FC = () => {
 
 	// Handle toggle rule using gRPC
 	const toggleRule = (isGlobal: boolean, rulePath: string, enabled: boolean) => {
-		FileServiceClient.toggleClineRule(
-			ToggleClineRuleRequest.create({
+		FileServiceClient.togglenAgentCoderAIRule(
+			TogglenAgentCoderAIRuleRequest.create({
 				isGlobal,
 				rulePath,
 				enabled,
@@ -108,15 +108,15 @@ const ClineRulesToggleModal: React.FC = () => {
 		)
 			.then((response) => {
 				// Update the local state with the response
-				if (response.globalClineRulesToggles?.toggles) {
-					setGlobalClineRulesToggles(response.globalClineRulesToggles.toggles)
+				if (response.globalnAgentCoderAIRulesToggles?.toggles) {
+					setGlobalnAgentCoderAIRulesToggles(response.globalnAgentCoderAIRulesToggles.toggles)
 				}
-				if (response.localClineRulesToggles?.toggles) {
-					setLocalClineRulesToggles(response.localClineRulesToggles.toggles)
+				if (response.localnAgentCoderAIRulesToggles?.toggles) {
+					setLocalnAgentCoderAIRulesToggles(response.localnAgentCoderAIRulesToggles.toggles)
 				}
 			})
 			.catch((error) => {
-				console.error("Error toggling Cline rule:", error)
+				console.error("Error toggling nAgentCoderAI rule:", error)
 			})
 	}
 
@@ -145,7 +145,7 @@ const ClineRulesToggleModal: React.FC = () => {
 				enabled,
 			} as ToggleWindsurfRuleRequest),
 		)
-			.then((response: ClineRulesToggles) => {
+			.then((response: nAgentCoderAIRulesToggles) => {
 				if (response.toggles) {
 					setLocalWindsurfRulesToggles(response.toggles)
 				}
@@ -197,10 +197,10 @@ const ClineRulesToggleModal: React.FC = () => {
 	return (
 		<div ref={modalRef}>
 			<div ref={buttonRef} className="inline-flex min-w-0 max-w-full">
-				<Tooltip tipText="Manage Cline Rules & Workflows" visible={isVisible ? false : undefined}>
+				<Tooltip tipText="Manage nAgentCoderAI Rules & Workflows" visible={isVisible ? false : undefined}>
 					<VSCodeButton
 						appearance="icon"
-						aria-label="Cline Rules"
+						aria-label="nAgentCoderAI Rules"
 						onClick={() => setIsVisible(!isVisible)}
 						style={{ padding: "0px 0px", height: "20px" }}>
 						<div className="flex items-center gap-1 text-xs whitespace-nowrap min-w-0 w-full">
@@ -257,10 +257,10 @@ const ClineRulesToggleModal: React.FC = () => {
 					<div className="text-xs text-[var(--vscode-descriptionForeground)] mb-4">
 						{currentView === "rules" ? (
 							<p>
-								Rules allow you to provide Cline with system-level guidance. Think of them as a persistent way to
+								Rules allow you to provide nAgentCoderAI with system-level guidance. Think of them as a persistent way to
 								include context and preferences for your projects or globally for every conversation.{" "}
 								<VSCodeLink
-									href="https://docs.cline.bot/features/cline-rules"
+									href="https://docs.nagentcoderai.bot/features/nagentcoderai-rules"
 									style={{ display: "inline" }}
 									className="text-xs">
 									Docs
@@ -268,7 +268,7 @@ const ClineRulesToggleModal: React.FC = () => {
 							</p>
 						) : (
 							<p>
-								Workflows allow you to define a series of steps to guide Cline through a repetitive set of tasks,
+								Workflows allow you to define a series of steps to guide nAgentCoderAI through a repetitive set of tasks,
 								such as deploying a service or submitting a PR. To invoke a workflow, type{" "}
 								<span
 									className=" 
@@ -277,7 +277,7 @@ const ClineRulesToggleModal: React.FC = () => {
 								</span>{" "}
 								in the chat.{" "}
 								<VSCodeLink
-									href="https://docs.cline.bot/features/slash-commands/workflows"
+									href="https://docs.nagentcoderai.bot/features/slash-commands/workflows"
 									style={{ display: "inline" }}
 									className="text-xs">
 									Docs
@@ -296,7 +296,7 @@ const ClineRulesToggleModal: React.FC = () => {
 									toggleRule={(rulePath, enabled) => toggleRule(true, rulePath, enabled)}
 									listGap="small"
 									isGlobal={true}
-									ruleType={"cline"}
+									ruleType={"nagentcoderai"}
 									showNewRule={true}
 									showNoRules={false}
 								/>
@@ -310,7 +310,7 @@ const ClineRulesToggleModal: React.FC = () => {
 									toggleRule={(rulePath, enabled) => toggleRule(false, rulePath, enabled)}
 									listGap="small"
 									isGlobal={false}
-									ruleType={"cline"}
+									ruleType={"nagentcoderai"}
 									showNewRule={false}
 									showNoRules={false}
 								/>
@@ -401,4 +401,4 @@ export const TabButton = ({
 	</StyledTabButton>
 )
 
-export default ClineRulesToggleModal
+export default nAgentCoderAIRulesToggleModal

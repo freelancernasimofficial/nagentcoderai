@@ -1,39 +1,39 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
-import type { BalanceResponse, PaymentTransaction, UsageTransaction } from "@shared/ClineAccount"
+import type { BalanceResponse, PaymentTransaction, UsageTransaction } from "@shared/nAgentCoderAIAccount"
 import { ExtensionMessage } from "@shared/ExtensionMessage"
 
-export class ClineAccountService {
-	private readonly baseUrl = "https://api.cline.bot/v1"
+export class nAgentCoderAIAccountService {
+	private readonly baseUrl = "https://api.nagentcoderai.bot/v1"
 	private postMessageToWebview: (message: ExtensionMessage) => Promise<void>
-	private getClineApiKey: () => Promise<string | undefined>
+	private getnAgentCoderAIApiKey: () => Promise<string | undefined>
 
 	constructor(
 		postMessageToWebview: (message: ExtensionMessage) => Promise<void>,
-		getClineApiKey: () => Promise<string | undefined>,
+		getnAgentCoderAIApiKey: () => Promise<string | undefined>,
 	) {
 		this.postMessageToWebview = postMessageToWebview
-		this.getClineApiKey = getClineApiKey
+		this.getnAgentCoderAIApiKey = getnAgentCoderAIApiKey
 	}
 
 	/**
-	 * Helper function to make authenticated requests to the Cline API
+	 * Helper function to make authenticated requests to the nAgentCoderAI API
 	 * @param endpoint The API endpoint to call (without the base URL)
 	 * @param config Additional axios request configuration
 	 * @returns The API response data
 	 * @throws Error if the API key is not found or the request fails
 	 */
 	private async authenticatedRequest<T>(endpoint: string, config: AxiosRequestConfig = {}): Promise<T> {
-		const clineApiKey = await this.getClineApiKey()
+		const nagentcoderaiApiKey = await this.getnAgentCoderAIApiKey()
 
-		if (!clineApiKey) {
-			throw new Error("Cline API key not found")
+		if (!nagentcoderaiApiKey) {
+			throw new Error("nAgentCoderAI API key not found")
 		}
 
 		const url = `${this.baseUrl}${endpoint}`
 		const requestConfig: AxiosRequestConfig = {
 			...config,
 			headers: {
-				Authorization: `Bearer ${clineApiKey}`,
+				Authorization: `Bearer ${nagentcoderaiApiKey}`,
 				"Content-Type": "application/json",
 				...config.headers,
 			},

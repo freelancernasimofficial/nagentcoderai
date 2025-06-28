@@ -1,26 +1,26 @@
 import { EmptyRequest } from "@shared/proto/common"
 import { RefreshedRules } from "@shared/proto/file"
 import type { Controller } from "../index"
-import { refreshClineRulesToggles } from "@core/context/instructions/user-instructions/cline-rules"
+import { refreshNAgentRulesToggles } from "@core/context/instructions/user-instructions/nagent-rules"
 import { refreshExternalRulesToggles } from "@core/context/instructions/user-instructions/external-rules"
 import { refreshWorkflowToggles } from "@core/context/instructions/user-instructions/workflows"
 import { cwd } from "@core/task"
 
 /**
- * Refreshes all rule toggles (Cline, External, and Workflows)
+ * Refreshes all rule toggles (nAgentCoderAI, External, and Workflows)
  * @param controller The controller instance
  * @param _request The empty request
  * @returns RefreshedRules containing updated toggles for all rule types
  */
 export async function refreshRules(controller: Controller, _request: EmptyRequest): Promise<RefreshedRules> {
 	try {
-		const { globalToggles, localToggles } = await refreshClineRulesToggles(controller.context, cwd)
+		const { globalToggles, localToggles } = await refreshNAgentRulesToggles(controller.context, cwd)
 		const { cursorLocalToggles, windsurfLocalToggles } = await refreshExternalRulesToggles(controller.context, cwd)
 		const { localWorkflowToggles, globalWorkflowToggles } = await refreshWorkflowToggles(controller.context, cwd)
 
 		return RefreshedRules.create({
-			globalClineRulesToggles: { toggles: globalToggles },
-			localClineRulesToggles: { toggles: localToggles },
+			globalNAgentRulesToggles: { toggles: globalToggles },
+			localNAgentRulesToggles: { toggles: localToggles },
 			localCursorRulesToggles: { toggles: cursorLocalToggles },
 			localWindsurfRulesToggles: { toggles: windsurfLocalToggles },
 			localWorkflowToggles: { toggles: localWorkflowToggles },

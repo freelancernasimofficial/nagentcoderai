@@ -1,7 +1,7 @@
 import { combineApiRequests } from "@/shared/combineApiRequests"
-import { ensureTaskDirectoryExists, saveApiConversationHistory, saveClineMessages } from "../storage/disk"
+import { ensureTaskDirectoryExists, saveApiConversationHistory, savenAgentCoderAIMessages } from "../storage/disk"
 import * as vscode from "vscode"
-import { ClineMessage } from "@/shared/ExtensionMessage"
+import { nAgentCoderAIMessage } from "@/shared/ExtensionMessage"
 import { getApiMetrics } from "@/shared/getApiMetrics"
 import { combineCommandSequences } from "@/shared/combineCommandSequences"
 import { findLastIndex } from "@/shared/array"
@@ -25,7 +25,7 @@ const cwd = vscode.workspace.workspaceFolders?.map((folder) => folder.uri.fsPath
 
 export class MessageStateHandler {
 	private apiConversationHistory: Anthropic.MessageParam[] = []
-	private clineMessages: ClineMessage[] = []
+	private nagentcoderaiMessages: nAgentCoderAIMessage[] = []
 	private taskIsFavorited: boolean
 	private checkpointTracker: CheckpointTracker | undefined
 	private updateTaskHistory: (historyItem: HistoryItem) => Promise<HistoryItem[]>
@@ -53,25 +53,25 @@ export class MessageStateHandler {
 		this.apiConversationHistory = newHistory
 	}
 
-	getClineMessages(): ClineMessage[] {
-		return this.clineMessages
+	getnAgentCoderAIMessages(): nAgentCoderAIMessage[] {
+		return this.nagentcoderaiMessages
 	}
 
-	setClineMessages(newMessages: ClineMessage[]) {
-		this.clineMessages = newMessages
+	setnAgentCoderAIMessages(newMessages: nAgentCoderAIMessage[]) {
+		this.nagentcoderaiMessages = newMessages
 	}
 
-	async saveClineMessagesAndUpdateHistory(): Promise<void> {
+	async savenAgentCoderAIMessagesAndUpdateHistory(): Promise<void> {
 		try {
-			await saveClineMessages(this.context, this.taskId, this.clineMessages)
+			await savenAgentCoderAIMessages(this.context, this.taskId, this.nagentcoderaiMessages)
 
 			// combined as they are in ChatView
-			const apiMetrics = getApiMetrics(combineApiRequests(combineCommandSequences(this.clineMessages.slice(1))))
-			const taskMessage = this.clineMessages[0] // first message is always the task say
+			const apiMetrics = getApiMetrics(combineApiRequests(combineCommandSequences(this.nagentcoderaiMessages.slice(1))))
+			const taskMessage = this.nagentcoderaiMessages[0] // first message is always the task say
 			const lastRelevantMessage =
-				this.clineMessages[
+				this.nagentcoderaiMessages[
 					findLastIndex(
-						this.clineMessages,
+						this.nagentcoderaiMessages,
 						(message) => !(message.ask === "resume_task" || message.ask === "resume_completed_task"),
 					)
 				]
@@ -100,7 +100,7 @@ export class MessageStateHandler {
 				isFavorited: this.taskIsFavorited,
 			})
 		} catch (error) {
-			console.error("Failed to save cline messages:", error)
+			console.error("Failed to save nagentcoderai messages:", error)
 		}
 	}
 
@@ -114,29 +114,29 @@ export class MessageStateHandler {
 		await saveApiConversationHistory(this.context, this.taskId, this.apiConversationHistory)
 	}
 
-	async addToClineMessages(message: ClineMessage) {
-		// these values allow us to reconstruct the conversation history at the time this cline message was created
-		// it's important that apiConversationHistory is initialized before we add cline messages
-		message.conversationHistoryIndex = this.apiConversationHistory.length - 1 // NOTE: this is the index of the last added message which is the user message, and once the clinemessages have been presented we update the apiconversationhistory with the completed assistant message. This means when resetting to a message, we need to +1 this index to get the correct assistant message that this tool use corresponds to
+	async addTonAgentCoderAIMessages(message: nAgentCoderAIMessage) {
+		// these values allow us to reconstruct the conversation history at the time this nagentcoderai message was created
+		// it's important that apiConversationHistory is initialized before we add nagentcoderai messages
+		message.conversationHistoryIndex = this.apiConversationHistory.length - 1 // NOTE: this is the index of the last added message which is the user message, and once the nagentcoderaimessages have been presented we update the apiconversationhistory with the completed assistant message. This means when resetting to a message, we need to +1 this index to get the correct assistant message that this tool use corresponds to
 		message.conversationHistoryDeletedRange = this.taskState.conversationHistoryDeletedRange
-		this.clineMessages.push(message)
-		await this.saveClineMessagesAndUpdateHistory()
+		this.nagentcoderaiMessages.push(message)
+		await this.savenAgentCoderAIMessagesAndUpdateHistory()
 	}
 
-	async overwriteClineMessages(newMessages: ClineMessage[]) {
-		this.clineMessages = newMessages
-		await this.saveClineMessagesAndUpdateHistory()
+	async overwritenAgentCoderAIMessages(newMessages: nAgentCoderAIMessage[]) {
+		this.nagentcoderaiMessages = newMessages
+		await this.savenAgentCoderAIMessagesAndUpdateHistory()
 	}
 
-	async updateClineMessage(index: number, updates: Partial<ClineMessage>): Promise<void> {
-		if (index < 0 || index >= this.clineMessages.length) {
+	async updatenAgentCoderAIMessage(index: number, updates: Partial<nAgentCoderAIMessage>): Promise<void> {
+		if (index < 0 || index >= this.nagentcoderaiMessages.length) {
 			throw new Error(`Invalid message index: ${index}`)
 		}
 
 		// Apply updates to the message
-		Object.assign(this.clineMessages[index], updates)
+		Object.assign(this.nagentcoderaiMessages[index], updates)
 
 		// Save changes and update history
-		await this.saveClineMessagesAndUpdateHistory()
+		await this.savenAgentCoderAIMessagesAndUpdateHistory()
 	}
 }

@@ -1,12 +1,12 @@
 import * as vscode from "vscode"
 import { Controller } from "@core/controller"
-import { ClineAPI } from "./cline"
+import { NAgentAPI } from "./nagent"
 import { getGlobalState } from "@core/storage/state"
 import { sendChatButtonClickedEvent } from "@core/controller/ui/subscribeToChatButtonClicked"
 import { WebviewProviderType as WebviewProviderTypeEnum } from "@shared/proto/ui"
 
-export function createClineAPI(outputChannel: vscode.OutputChannel, sidebarController: Controller): ClineAPI {
-	const api: ClineAPI = {
+export function createNAgentAPI(outputChannel: vscode.OutputChannel, sidebarController: Controller): NAgentAPI {
+	const api: NAgentAPI = {
 		startNewTask: async (task?: string, images?: string[]) => {
 			outputChannel.appendLine("Starting new task")
 			await sidebarController.clearTask()

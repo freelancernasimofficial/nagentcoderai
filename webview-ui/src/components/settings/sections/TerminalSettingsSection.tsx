@@ -103,7 +103,7 @@ export const TerminalSettingsSection: React.FC<TerminalSettingsSectionProps> = (
 							))}
 						</VSCodeDropdown>
 						<p style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)", margin: "5px 0 0 0" }}>
-							Select the default terminal Cline will use. 'Default' uses your VSCode global setting.
+							Select the default terminal nAgentCoderAI will use. 'Default' uses your VSCode global setting.
 						</p>
 					</div>
 
@@ -128,7 +128,7 @@ export const TerminalSettingsSection: React.FC<TerminalSettingsSectionProps> = (
 							)}
 						</div>
 						<p style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)", margin: 0 }}>
-							Set how long Cline waits for shell integration to activate before executing commands. Increase this
+							Set how long nAgentCoderAI waits for shell integration to activate before executing commands. Increase this
 							value if you experience terminal connection timeouts.
 						</p>
 					</div>
@@ -142,7 +142,7 @@ export const TerminalSettingsSection: React.FC<TerminalSettingsSectionProps> = (
 							</VSCodeCheckbox>
 						</div>
 						<p style={{ fontSize: "12px", color: "var(--vscode-descriptionForeground)", margin: 0 }}>
-							When enabled, Cline will reuse existing terminal windows that aren't in the current working directory.
+							When enabled, nAgentCoderAI will reuse existing terminal windows that aren't in the current working directory.
 							Disable this if you experience issues with task lockout after a terminal command.
 						</p>
 					</div>

@@ -8,20 +8,20 @@ export const LOCK_TEXT_SYMBOL = "\u{1F512}"
 
 /**
  * Controls LLM access to files by enforcing ignore patterns.
- * Designed to be instantiated once in Cline.ts and passed to file manipulation services.
- * Uses the 'ignore' library to support standard .gitignore syntax in .clineignore files.
+ * Designed to be instantiated once in nAgentCoderAI.ts and passed to file manipulation services.
+ * Uses the 'ignore' library to support standard .gitignore syntax in .nagentcoderaiignore files.
  */
-export class ClineIgnoreController {
+export class nAgentCoderAIIgnoreController {
 	private cwd: string
 	private ignoreInstance: Ignore
 	private disposables: vscode.Disposable[] = []
-	clineIgnoreContent: string | undefined
+	nagentcoderaiIgnoreContent: string | undefined
 
 	constructor(cwd: string) {
 		this.cwd = cwd
 		this.ignoreInstance = ignore()
-		this.clineIgnoreContent = undefined
-		// Set up file watcher for .clineignore
+		this.nagentcoderaiIgnoreContent = undefined
+		// Set up file watcher for .nagentcoderaiignore
 		this.setupFileWatcher()
 	}
 
@@ -30,26 +30,26 @@ export class ClineIgnoreController {
 	 * Must be called after construction and before using the controller
 	 */
 	async initialize(): Promise<void> {
-		await this.loadClineIgnore()
+		await this.loadnAgentCoderAIIgnore()
 	}
 
 	/**
-	 * Set up the file watcher for .clineignore changes
+	 * Set up the file watcher for .nagentcoderaiignore changes
 	 */
 	private setupFileWatcher(): void {
-		const clineignorePattern = new vscode.RelativePattern(this.cwd, ".clineignore")
-		const fileWatcher = vscode.workspace.createFileSystemWatcher(clineignorePattern)
+		const nagentcoderaiignorePattern = new vscode.RelativePattern(this.cwd, ".nagentcoderaiignore")
+		const fileWatcher = vscode.workspace.createFileSystemWatcher(nagentcoderaiignorePattern)
 
 		// Watch for changes and updates
 		this.disposables.push(
 			fileWatcher.onDidChange(() => {
-				this.loadClineIgnore()
+				this.loadnAgentCoderAIIgnore()
 			}),
 			fileWatcher.onDidCreate(() => {
-				this.loadClineIgnore()
+				this.loadnAgentCoderAIIgnore()
 			}),
 			fileWatcher.onDidDelete(() => {
-				this.loadClineIgnore()
+				this.loadnAgentCoderAIIgnore()
 			}),
 		)
 
@@ -58,25 +58,25 @@ export class ClineIgnoreController {
 	}
 
 	/**
-	 * Load custom patterns from .clineignore if it exists.
+	 * Load custom patterns from .nagentcoderaiignore if it exists.
 	 * Supports "!include <filename>" to load additional ignore patterns from other files.
 	 */
-	private async loadClineIgnore(): Promise<void> {
+	private async loadnAgentCoderAIIgnore(): Promise<void> {
 		try {
 			// Reset ignore instance to prevent duplicate patterns
 			this.ignoreInstance = ignore()
-			const ignorePath = path.join(this.cwd, ".clineignore")
+			const ignorePath = path.join(this.cwd, ".nagentcoderaiignore")
 			if (await fileExistsAtPath(ignorePath)) {
 				const content = await fs.readFile(ignorePath, "utf8")
-				this.clineIgnoreContent = content
+				this.nagentcoderaiIgnoreContent = content
 				await this.processIgnoreContent(content)
-				this.ignoreInstance.add(".clineignore")
+				this.ignoreInstance.add(".nagentcoderaiignore")
 			} else {
-				this.clineIgnoreContent = undefined
+				this.nagentcoderaiIgnoreContent = undefined
 			}
 		} catch (error) {
 			// Should never happen: reading file failed even though it exists
-			console.error("Unexpected error loading .clineignore:", error)
+			console.error("Unexpected error loading .nagentcoderaiignore:", error)
 		}
 	}
 
@@ -91,14 +91,14 @@ export class ClineIgnoreController {
 		}
 
 		// Process !include directives
-		const combinedContent = await this.processClineIgnoreIncludes(content)
+		const combinedContent = await this.processnAgentCoderAIIgnoreIncludes(content)
 		this.ignoreInstance.add(combinedContent)
 	}
 
 	/**
 	 * Process !include directives and combine all included file contents
 	 */
-	private async processClineIgnoreIncludes(content: string): Promise<string> {
+	private async processnAgentCoderAIIgnoreIncludes(content: string): Promise<string> {
 		let combinedContent = ""
 		const lines = content.split(/\r?\n/)
 
@@ -128,7 +128,7 @@ export class ClineIgnoreController {
 		const resolvedIncludePath = path.join(this.cwd, includePath)
 
 		if (!(await fileExistsAtPath(resolvedIncludePath))) {
-			console.debug(`[ClineIgnore] Included file not found: ${resolvedIncludePath}`)
+			console.debug(`[nAgentCoderAIIgnore] Included file not found: ${resolvedIncludePath}`)
 			return null
 		}
 
@@ -141,8 +141,8 @@ export class ClineIgnoreController {
 	 * @returns true if file is accessible, false if ignored
 	 */
 	validateAccess(filePath: string): boolean {
-		// Always allow access if .clineignore does not exist
-		if (!this.clineIgnoreContent) {
+		// Always allow access if .nagentcoderaiignore does not exist
+		if (!this.nagentcoderaiIgnoreContent) {
 			return true
 		}
 		try {
@@ -165,8 +165,8 @@ export class ClineIgnoreController {
 	 * @returns path of file that is being accessed if it is being accessed, undefined if command is allowed
 	 */
 	validateCommand(command: string): string | undefined {
-		// Always allow if no .clineignore exists
-		if (!this.clineIgnoreContent) {
+		// Always allow if no .nagentcoderaiignore exists
+		if (!this.nagentcoderaiIgnoreContent) {
 			return undefined
 		}
 

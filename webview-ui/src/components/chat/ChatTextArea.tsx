@@ -43,7 +43,7 @@ import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, us
 import DynamicTextArea from "react-textarea-autosize"
 import { useClickAway, useEvent, useWindowSize } from "react-use"
 import styled from "styled-components"
-import ClineRulesToggleModal from "../cline-rules/ClineRulesToggleModal"
+import nAgentCoderAIRulesToggleModal from "../nagentcoderai-rules/nAgentCoderAIRulesToggleModal"
 import ServersToggleModal from "./ServersToggleModal"
 
 const getImageDimensions = (dataUrl: string): Promise<{ width: number; height: number }> => {
@@ -1093,7 +1093,7 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			const unknownModel = "unknown"
 			if (!apiConfiguration) return unknownModel
 			switch (selectedProvider) {
-				case "cline":
+				case "nagentcoderai":
 					return `${selectedProvider}:${selectedModelId}`
 				case "openai":
 					return `openai-compat:${selectedModelId}`
@@ -1700,7 +1700,7 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 								</VSCodeButton>
 							</Tooltip>
 							<ServersToggleModal />
-							<ClineRulesToggleModal />
+							<nAgentCoderAIRulesToggleModal />
 							<ModelContainer ref={modelSelectorRef}>
 								<ModelButtonWrapper ref={buttonRef}>
 									<ModelDisplayButton
@@ -1736,7 +1736,7 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 					<Tooltip
 						style={{ zIndex: 1000 }}
 						visible={shownTooltipMode !== null}
-						tipText={`In ${shownTooltipMode === "act" ? "Act" : "Plan"}  mode, Cline will ${shownTooltipMode === "act" ? "complete the task immediately" : "gather information to architect a plan"}`}
+						tipText={`In ${shownTooltipMode === "act" ? "Act" : "Plan"}  mode, nAgentCoderAI will ${shownTooltipMode === "act" ? "complete the task immediately" : "gather information to architect a plan"}`}
 						hintText={`Toggle w/ ${metaKeyChar}+Shift+A`}>
 						<SwitchContainer data-testid="mode-switch" disabled={false} onClick={onModeToggle}>
 							<Slider isAct={chatSettings.mode === "act"} isPlan={chatSettings.mode === "plan"} />

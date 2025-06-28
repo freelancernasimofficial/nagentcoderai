@@ -36,13 +36,13 @@ const GeneralSettingsSection = ({
 						Allow anonymous error and usage reporting
 					</VSCodeCheckbox>
 					<p className="text-xs mt-[5px] text-[var(--vscode-descriptionForeground)]">
-						Help improve Cline by sending anonymous usage data and error reports. No code, prompts, or personal
+						Help improve nAgentCoderAI by sending anonymous usage data and error reports. No code, prompts, or personal
 						information are ever sent. See our{" "}
-						<VSCodeLink href="https://docs.cline.bot/more-info/telemetry" className="text-inherit">
+						<VSCodeLink href="https://docs.nagentcoderai.bot/more-info/telemetry" className="text-inherit">
 							telemetry overview
 						</VSCodeLink>{" "}
 						and{" "}
-						<VSCodeLink href="https://cline.bot/privacy" className="text-inherit">
+						<VSCodeLink href="https://nagentcoderai.bot/privacy" className="text-inherit">
 							privacy policy
 						</VSCodeLink>{" "}
 						for more details.

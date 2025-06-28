@@ -1,14 +1,14 @@
-import { ClineMessage } from "@shared/ExtensionMessage"
+import { nAgentCoderAIMessage } from "@shared/ExtensionMessage"
 import { COLOR_WHITE, COLOR_GRAY, COLOR_DARK_GRAY, COLOR_BEIGE, COLOR_BLUE, COLOR_PURPLE, COLOR_GREEN } from "../colors"
 
 /**
  *
  * Get the color for a block or the indicator based on the message type
  *
- * @param message ClineMessage - The message to determine the color for
+ * @param message nAgentCoderAIMessage - The message to determine the color for
  * @returns string - The color code for the block or indicator
  */
-export const getColor = (message: ClineMessage): string => {
+export const getColor = (message: nAgentCoderAIMessage): string => {
 	if (message.type === "say") {
 		switch (message.say) {
 			case "task":

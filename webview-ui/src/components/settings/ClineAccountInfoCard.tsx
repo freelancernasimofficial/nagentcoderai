@@ -4,11 +4,11 @@ import { useExtensionState } from "@/context/ExtensionStateContext"
 import { AccountServiceClient } from "@/services/grpc-client"
 import { EmptyRequest } from "@shared/proto/common"
 
-export const ClineAccountInfoCard = () => {
+export const nAgentCoderAIAccountInfoCard = () => {
 	const { user: firebaseUser, handleSignOut } = useFirebaseAuth()
 	const { userInfo, apiConfiguration, navigateToAccount } = useExtensionState()
 
-	let user = apiConfiguration?.clineApiKey ? firebaseUser || userInfo : undefined
+	let user = apiConfiguration?.nagentcoderaiApiKey ? firebaseUser || userInfo : undefined
 
 	const handleLogin = () => {
 		AccountServiceClient.accountLoginClicked(EmptyRequest.create()).catch((err) =>
@@ -29,7 +29,7 @@ export const ClineAccountInfoCard = () => {
 			) : (
 				<div>
 					<VSCodeButton onClick={handleLogin} className="mt-0">
-						Sign Up with Cline
+						Sign Up with nAgentCoderAI
 					</VSCodeButton>
 				</div>
 			)}

@@ -8,8 +8,8 @@ import { ChatSettings } from "./ChatSettings"
 import { HistoryItem } from "./HistoryItem"
 import { McpServer, McpMarketplaceCatalog, McpDownloadResponse, McpViewTab } from "./mcp"
 import { TelemetrySetting } from "./TelemetrySetting"
-import type { BalanceResponse, UsageTransaction, PaymentTransaction } from "../shared/ClineAccount"
-import { ClineRulesToggles } from "./cline-rules"
+import type { BalanceResponse, UsageTransaction, PaymentTransaction } from "../shared/nAgentCoderAIAccount"
+import { NAgentRulesToggles } from "./nagent-rules"
 import { UserInfo } from "./UserInfo"
 
 // webview will hold state
@@ -66,7 +66,7 @@ export interface ExtensionState {
 	remoteBrowserHost?: string
 	chatSettings: ChatSettings
 	checkpointTrackerErrorMessage?: string
-	clineMessages: ClineMessage[]
+	nagentcoderaiMessages: nAgentCoderAIMessage[]
 	currentTaskItem?: HistoryItem
 	mcpMarketplaceEnabled?: boolean
 	mcpRichDisplayEnabled: boolean
@@ -84,20 +84,20 @@ export interface ExtensionState {
 	userInfo?: UserInfo
 	version: string
 	distinctId: string
-	globalClineRulesToggles: ClineRulesToggles
-	localClineRulesToggles: ClineRulesToggles
-	localWorkflowToggles: ClineRulesToggles
-	globalWorkflowToggles: ClineRulesToggles
-	localCursorRulesToggles: ClineRulesToggles
-	localWindsurfRulesToggles: ClineRulesToggles
+	globalNAgentRulesToggles: NAgentRulesToggles
+	localNAgentRulesToggles: NAgentRulesToggles
+	localWorkflowToggles: NAgentRulesToggles
+	globalWorkflowToggles: NAgentRulesToggles
+	localCursorRulesToggles: NAgentRulesToggles
+	localWindsurfRulesToggles: NAgentRulesToggles
 	mcpResponsesCollapsed?: boolean
 }
 
-export interface ClineMessage {
+export interface nAgentCoderAIMessage {
 	ts: number
 	type: "ask" | "say"
-	ask?: ClineAsk
-	say?: ClineSay
+	ask?: nAgentCoderAIAsk
+	say?: nAgentCoderAISay
 	text?: string
 	reasoning?: string
 	images?: string[]
@@ -110,7 +110,7 @@ export interface ClineMessage {
 	conversationHistoryDeletedRange?: [number, number] // for when conversation history is truncated for API requests
 }
 
-export type ClineAsk =
+export type nAgentCoderAIAsk =
 	| "followup"
 	| "plan_mode_respond"
 	| "command"
@@ -128,7 +128,7 @@ export type ClineAsk =
 	| "condense"
 	| "report_bug"
 
-export type ClineSay =
+export type nAgentCoderAISay =
 	| "task"
 	| "error"
 	| "api_req_started"
@@ -152,12 +152,12 @@ export type ClineSay =
 	| "use_mcp_server"
 	| "diff_error"
 	| "deleted_api_reqs"
-	| "clineignore_error"
+	| "nagentcoderaiignore_error"
 	| "checkpoint_created"
 	| "load_mcp_documentation"
 	| "info" // Added for general informational messages like retry status
 
-export interface ClineSayTool {
+export interface nAgentCoderAISayTool {
 	tool:
 		| "editedExistingFile"
 		| "newFileCreated"
@@ -179,7 +179,7 @@ export interface ClineSayTool {
 export const browserActions = ["launch", "click", "type", "scroll_down", "scroll_up", "close"] as const
 export type BrowserAction = (typeof browserActions)[number]
 
-export interface ClineSayBrowserAction {
+export interface nAgentCoderAISayBrowserAction {
 	action: BrowserAction
 	coordinate?: string
 	text?: string
@@ -192,7 +192,7 @@ export type BrowserActionResult = {
 	currentMousePosition?: string
 }
 
-export interface ClineAskUseMcpServer {
+export interface nAgentCoderAIAskUseMcpServer {
 	serverName: string
 	type: "use_mcp_tool" | "access_mcp_resource"
 	toolName?: string
@@ -200,30 +200,30 @@ export interface ClineAskUseMcpServer {
 	uri?: string
 }
 
-export interface ClinePlanModeResponse {
+export interface nAgentCoderAIPlanModeResponse {
 	response: string
 	options?: string[]
 	selected?: string
 }
 
-export interface ClineAskQuestion {
+export interface nAgentCoderAIAskQuestion {
 	question: string
 	options?: string[]
 	selected?: string
 }
 
-export interface ClineAskNewTask {
+export interface nAgentCoderAIAskNewTask {
 	context: string
 }
 
-export interface ClineApiReqInfo {
+export interface nAgentCoderAIApiReqInfo {
 	request?: string
 	tokensIn?: number
 	tokensOut?: number
 	cacheWrites?: number
 	cacheReads?: number
 	cost?: number
-	cancelReason?: ClineApiReqCancelReason
+	cancelReason?: nAgentCoderAIApiReqCancelReason
 	streamingFailedMessage?: string
 	retryStatus?: {
 		attempt: number
@@ -233,6 +233,6 @@ export interface ClineApiReqInfo {
 	}
 }
 
-export type ClineApiReqCancelReason = "streaming_failed" | "user_cancelled" | "retries_exhausted"
+export type nAgentCoderAIApiReqCancelReason = "streaming_failed" | "user_cancelled" | "retries_exhausted"
 
 export const COMPLETION_RESULT_CHANGES_FLAG = "HAS_CHANGES"
